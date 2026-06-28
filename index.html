@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>USER PW LIST V.1</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PW LIST">
+<meta name="theme-color" content="#1a1a2e">
 <style>
 :root {
   --bg:#1a1a2e;--bg2:#16213e;--bg3:#0f3460;
@@ -223,6 +228,23 @@ const MASTER_KEY="tosMasterPw";
 let rows=[],showPw={},isDark=true;
 
 // ── LOCK ──
+// ── BACK BUTTON FIX (Mobile) ──
+history.pushState({page:1}, null, location.href);
+window.addEventListener('popstate', function(e) {
+  // Always push state back so app never closes
+  history.pushState({page:1}, null, location.href);
+  // Blur active input to close keyboard
+  if(document.activeElement && document.activeElement !== document.body){
+    document.activeElement.blur();
+    return;
+  }
+  // If lock screen visible, do nothing
+  const lockVisible = document.getElementById('lock-screen').style.display !== 'none';
+  if(lockVisible) return;
+  // Otherwise blur any focused element
+  document.body.focus();
+});
+
 window.onload=function(){
   const s=localStorage.getItem(MASTER_KEY);
   document.getElementById("lock-label").textContent=s?"Master Password দিয়ে প্রবেশ করুন":"প্রথমবার: Master Password সেট করুন";
