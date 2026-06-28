@@ -12,27 +12,55 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Arial,sans-serif;background:#1a1a2e;color:#eee;min-height:100vh;font-size:15px;}
 
-/* ── STICKY TOP WRAPPER ── */
+/* ── LOGIN SCREEN ── */
+#login-screen{position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:9999;}
+.login-box{background:#16213e;border:2px solid #e94560;border-radius:16px;padding:40px 32px;text-align:center;max-width:380px;width:92%;}
+.login-icon{font-size:3rem;margin-bottom:10px;}
+.login-box h2{color:#e94560;font-size:1.5rem;margin-bottom:4px;}
+.login-box .sub{color:#aaa;font-size:0.8rem;margin-bottom:24px;}
+.login-field{position:relative;margin-bottom:14px;}
+.login-field label{display:block;text-align:left;color:#aaa;font-size:0.82rem;margin-bottom:5px;}
+.login-field input{width:100%;padding:11px 14px;border-radius:8px;border:2px solid #2a2a4a;background:#0f3460;color:#eee;font-size:1rem;}
+.login-field input:focus{outline:none;border-color:#e94560;}
+#login-err{color:#e94560;font-size:0.83rem;min-height:20px;margin-bottom:8px;}
+.btn-login{width:100%;padding:12px;background:#e94560;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:4px;}
+.btn-login:hover{background:#c73652;}
+.login-footer{color:#555;font-size:0.75rem;margin-top:16px;}
+
+/* ── CHANGE CREDS MODAL ── */
+.modal-bg{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:8888;}
+.modal{background:#16213e;border:2px solid #e94560;border-radius:14px;padding:28px;max-width:360px;width:92%;text-align:center;}
+.modal h3{color:#e94560;margin-bottom:16px;font-size:1.1rem;}
+.modal label{display:block;text-align:left;color:#aaa;font-size:0.8rem;margin-bottom:4px;margin-top:10px;}
+.modal input{width:100%;padding:10px 12px;border-radius:7px;border:1px solid #2a2a4a;background:#0f3460;color:#eee;font-size:0.9rem;}
+.modal input:focus{outline:none;border-color:#e94560;}
+.modal-err{color:#e94560;font-size:0.82rem;min-height:18px;margin-top:8px;}
+.modal-btns{display:flex;gap:8px;margin-top:14px;}
+.modal-btns button{flex:1;padding:10px;border-radius:7px;font-weight:bold;border:none;cursor:pointer;}
+.btn-ok{background:#27ae60;color:#fff;}
+.btn-cancel{background:#555;color:#fff;}
+
+/* ── STICKY TOP ── */
 #sticky-top{position:sticky;top:0;z-index:100;}
 
 /* ── HEADER ── */
 header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px solid #e94560;padding:10px 16px;}
 .header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
 .header-top h1{font-size:1.2rem;color:#e94560;font-weight:bold;}
-.header-top .byline{font-size:0.75rem;color:#aaa;}
-.header-right{display:flex;gap:6px;align-items:center;}
+.byline{font-size:0.75rem;color:#aaa;}
+.header-right{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
 .icon-btn{background:#0f3460;border:1px solid #2a2a4a;color:#eee;border-radius:7px;padding:6px 11px;cursor:pointer;font-size:0.82rem;transition:.2s;white-space:nowrap;}
 .icon-btn:hover{border-color:#e94560;color:#e94560;}
 
-/* ── QUICK LINKS IN HEADER ── */
-#quicklinks{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:4px 0 2px 0;}
-#quicklinks span{color:#aaa;font-size:0.75rem;margin-right:2px;}
+/* ── QUICK LINKS ── */
+#quicklinks{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:4px 0 2px;}
+#quicklinks span{color:#aaa;font-size:0.75rem;}
 #quicklinks a{color:#7ec8e3;font-size:0.8rem;text-decoration:none;padding:3px 10px;border:1px solid #2a3a5a;border-radius:12px;white-space:nowrap;transition:.2s;}
 #quicklinks a:hover{background:#e94560;color:#fff;border-color:#e94560;}
 
 /* ── TOOLBAR ── */
 .toolbar{background:#16213e;padding:10px 14px;display:flex;gap:7px;flex-wrap:wrap;align-items:center;border-bottom:1px solid #2a2a4a;}
-.toolbar input{flex:1;min-width:130px;padding:9px 11px;border:1px solid #2a2a4a;border-radius:7px;background:#0f3460;color:#eee;font-size:0.95rem;}
+.toolbar input{flex:1;min-width:120px;padding:9px 11px;border:1px solid #2a2a4a;border-radius:7px;background:#0f3460;color:#eee;font-size:0.95rem;}
 .toolbar input::placeholder{color:#888;}
 .toolbar input:focus{outline:none;border-color:#e94560;}
 button{cursor:pointer;border:none;border-radius:7px;font-weight:bold;transition:.2s;}
@@ -55,35 +83,24 @@ button:hover{filter:brightness(.88);}
 /* ── TABLE ── */
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:0.95rem;}
-thead th{padding:10px;text-align:left;color:#e94560;border-bottom:2px solid #e94560;font-size:1rem;background:#0f3460;white-space:nowrap;}
+thead{position:sticky;top:0;z-index:4;background:#0f3460;}
+thead th{padding:10px;text-align:left;color:#e94560;border-bottom:2px solid #e94560;font-size:1rem;white-space:nowrap;}
 tbody tr{border-bottom:1px solid #2a2a4a;transition:background .15s;}
 tbody tr:hover{background:#1e1e3a;}
-tbody td{padding:9px 9px;vertical-align:middle;}
+tbody td{padding:9px;vertical-align:middle;}
 .editable{background:transparent;border:none;color:#eee;font-size:0.95rem;width:100%;font-family:Arial,sans-serif;padding:3px 5px;border-radius:4px;}
 .editable:focus{outline:1px solid #e94560;background:#0f3460;}
-.pw-wrap{display:flex;align-items:center;gap:3px;}
-.small-btn{background:none;border:1px solid #2a2a4a;color:#aaa;padding:3px 7px;font-size:0.78rem;border-radius:4px;}
+.pw-wrap{display:flex;align-items:center;gap:4px;}
+.small-btn{background:none;border:1px solid #2a2a4a;color:#aaa;padding:4px 8px;font-size:0.8rem;border-radius:4px;}
 .small-btn:hover{border-color:#e94560;color:#e94560;}
 .btn-del{background:none;border:1px solid #e94560;color:#e94560;padding:5px 10px;font-size:0.82rem;border-radius:5px;}
 .btn-del:hover{background:#e94560;color:#fff;}
 .empty-msg{text-align:center;padding:50px;color:#555;}
 
-/* ── MODAL ── */
-.modal-bg{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;z-index:8888;}
-.modal{background:#16213e;border:2px solid #e94560;border-radius:14px;padding:28px;max-width:340px;width:90%;text-align:center;}
-.modal h3{color:#e94560;margin-bottom:16px;}
-.modal input{width:100%;padding:10px 12px;border-radius:7px;border:1px solid #2a2a4a;background:#0f3460;color:#eee;font-size:0.9rem;margin-bottom:10px;}
-.modal input:focus{outline:none;border-color:#e94560;}
-.modal-btns{display:flex;gap:8px;margin-top:8px;}
-.modal-btns button{flex:1;padding:9px;}
-.btn-ok{background:#27ae60;color:#fff;}
-.btn-cancel{background:#555;color:#fff;}
-
 /* ── TOAST ── */
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:9px 20px;border-radius:20px;font-size:0.85rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999;}
 #toast.show{opacity:1;}
 
-/* ── MOBILE ── */
 @media(max-width:600px){
   .toolbar input{min-width:100%;}
   .btn-add,.btn-save,.btn-reload,.btn-export,.btn-import{width:100%;padding:11px;}
@@ -93,13 +110,53 @@ tbody td{padding:9px 9px;vertical-align:middle;}
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-icon">🗂️</div>
+    <h2>USER PW LIST V.1</h2>
+    <div class="sub">Created by Idris Mansoor</div>
+    <div class="login-field">
+      <label>👤 Username</label>
+      <input type="text" id="l-user" placeholder="Username লিখুন" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <div class="login-field">
+      <label>🔑 Password</label>
+      <input type="password" id="l-pass" placeholder="Password লিখুন" autocomplete="new-password" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <div id="login-err"></div>
+    <button class="btn-login" onclick="doLogin()">🔓 প্রবেশ করুন</button>
+    <div class="login-footer">TOS KHO — Gulftainer Sharjah</div>
+  </div>
+</div>
+
+<!-- CHANGE CREDENTIALS MODAL -->
+<div class="modal-bg" id="creds-modal" style="display:none">
+  <div class="modal">
+    <h3>🔑 Login পরিবর্তন করুন</h3>
+    <label>বর্তমান Password</label>
+    <input type="password" id="c-old" placeholder="বর্তমান password" autocomplete="new-password"/>
+    <label>নতুন Username</label>
+    <input type="text" id="c-user" placeholder="নতুন username" autocomplete="off"/>
+    <label>নতুন Password</label>
+    <input type="password" id="c-new" placeholder="নতুন password (কমপক্ষে ৪ অক্ষর)" autocomplete="new-password"/>
+    <label>নতুন Password আবার</label>
+    <input type="password" id="c-new2" placeholder="confirm password" autocomplete="new-password"/>
+    <div class="modal-err" id="creds-err"></div>
+    <div class="modal-btns">
+      <button class="btn-ok" onclick="doChangeCreds()">✅ পরিবর্তন করুন</button>
+      <button class="btn-cancel" onclick="closeModal('creds-modal')">❌ বাতিল</button>
+    </div>
+  </div>
+</div>
+
 <!-- IMPORT MODAL -->
 <div class="modal-bg" id="import-modal" style="display:none">
   <div class="modal">
     <h3>📥 CSV Import</h3>
-    <p style="color:#aaa;font-size:.82rem;margin-bottom:12px;">ফরম্যাট: <b>#, Company, Username, Password, Note</b><br>Header row থাকলে skip হবে।</p>
-    <input type="file" id="csv-file" accept=".csv" style="color:#eee;margin-bottom:10px;" />
-    <div id="import-err" style="color:#e94560;font-size:.82rem;min-height:18px;"></div>
+    <p style="color:#aaa;font-size:.82rem;margin-bottom:12px;">ফরম্যাট: <b>#, Company, Username, Password, Note</b></p>
+    <input type="file" id="csv-file" accept=".csv" style="color:#eee;margin-bottom:10px;width:100%"/>
+    <div class="modal-err" id="import-err"></div>
     <div class="modal-btns">
       <button class="btn-ok" onclick="doImportCSV()">📥 Import</button>
       <button class="btn-cancel" onclick="closeModal('import-modal')">❌ বাতিল</button>
@@ -107,71 +164,132 @@ tbody td{padding:9px 9px;vertical-align:middle;}
   </div>
 </div>
 
-<!-- APP -->
-<div id="sticky-top">
-  <header>
-    <div class="header-top">
-      <div>
-        <h1>🗂️ USER PW LIST V.1</h1>
-        <div class="byline">Created by <b>Idris Mansoor</b> &nbsp;|&nbsp; Google Sheets সংযুক্ত</div>
+<!-- MAIN APP -->
+<div id="app" style="display:none">
+  <div id="sticky-top">
+    <header>
+      <div class="header-top">
+        <div>
+          <h1>🗂️ USER PW LIST V.1</h1>
+          <div class="byline">Created by <b>Idris Mansoor</b> &nbsp;|&nbsp; Google Sheets সংযুক্ত</div>
+        </div>
+        <div class="header-right">
+          <button class="icon-btn" onclick="document.getElementById('creds-modal').style.display='flex'">🔑 Login পরিবর্তন</button>
+          <button class="icon-btn" onclick="doLogout()">🚪 Logout</button>
+          <button class="icon-btn" onclick="document.getElementById('import-modal').style.display='flex'">📥 Import</button>
+          <button class="icon-btn" onclick="exportCSV()">📤 Export</button>
+        </div>
       </div>
-      <div class="header-right">
-        <button class="icon-btn" onclick="document.getElementById('import-modal').style.display='flex'">📥 CSV Import</button>
-        <button class="icon-btn" onclick="exportCSV()">📤 CSV Export</button>
+      <div id="quicklinks">
+        <span>🔗</span>
+        <a href="https://www.gulftainer.com/container-tracking/" target="_blank">📦 Container Tracking</a>
+        <a href="https://tos.gulftainer.com/" target="_blank">🚢 TOS Gulftainer</a>
+        <a href="https://eservices.gulftainer.com/a/e-token-generator/login" target="_blank">🎫 E-Token</a>
+        <a href="https://customer-registration.gulftainer.com/home" target="_blank">📋 Customer Reg.</a>
       </div>
+    </header>
+
+    <div class="toolbar">
+      <input type="text" id="inp-company" placeholder="🏢 কোম্পানি" autocomplete="off"/>
+      <input type="text" id="inp-user" placeholder="👤 User Name" autocomplete="off"/>
+      <input type="text" id="inp-pw" placeholder="🔑 Password" autocomplete="new-password"/>
+      <input type="text" id="inp-note" placeholder="📝 Note" autocomplete="off"/>
+      <button class="btn-add" onclick="addRow()">➕ যোগ করুন</button>
+      <button class="btn-save" onclick="saveToSheets()">💾 Save</button>
+      <button class="btn-reload" onclick="loadFromSheets()">🔄 Reload</button>
     </div>
-    <!-- QUICK LINKS -->
-    <div id="quicklinks">
-      <span>🔗</span>
-      <a href="https://www.gulftainer.com/container-tracking/" target="_blank">📦 Container Tracking</a>
-      <a href="https://tos.gulftainer.com/" target="_blank">🚢 TOS Gulftainer</a>
-      <a href="https://eservices.gulftainer.com/a/e-token-generator/login" target="_blank">🎫 E-Token</a>
-      <a href="https://customer-registration.gulftainer.com/home" target="_blank">📋 Customer Reg.</a>
+
+    <div id="status" class="loading">⏳ লোড হচ্ছে...</div>
+
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="🔍 কোম্পানি বা username খুঁজুন..." oninput="renderTable()" autocomplete="off"/>
+      <button class="icon-btn" onclick="document.getElementById('search').value='';renderTable();">✖ Clear</button>
     </div>
-  </header>
+  </div><!-- end sticky-top -->
 
-  <div class="toolbar">
-    <input type="text" id="inp-company" placeholder="🏢 কোম্পানি" autocomplete="off" />
-    <input type="text" id="inp-user" placeholder="👤 User Name" autocomplete="off" />
-    <input type="text" id="inp-pw" placeholder="🔑 Password" autocomplete="new-password" />
-    <input type="text" id="inp-note" placeholder="📝 Note" autocomplete="off" />
-    <button class="btn-add" onclick="addRow()">➕ যোগ করুন</button>
-    <button class="btn-save" onclick="saveToSheets()">💾 Save</button>
-    <button class="btn-reload" onclick="loadFromSheets()">🔄 Reload</button>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>কোম্পানি</th><th>User Name</th>
+          <th>Password</th><th>Note</th><th>মুছুন</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="empty-msg" class="empty-msg" style="display:none">কোনো entry নেই।</div>
   </div>
-
-  <div id="status" class="loading">⏳ লোড হচ্ছে...</div>
-
-  <div class="search-bar">
-    <input type="text" id="search" placeholder="🔍 কোম্পানি বা username খুঁজুন..." oninput="renderTable()" autocomplete="off" />
-    <button class="icon-btn" onclick="document.getElementById('search').value='';renderTable();" style="white-space:nowrap;">✖ Clear</button>
-  </div>
-</div><!-- end sticky-top -->
-
-<div class="table-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th>#</th><th>কোম্পানি</th><th>User Name</th>
-        <th>Password</th><th>Note</th><th>মুছুন</th>
-      </tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
-  <div id="empty-msg" class="empty-msg" style="display:none">কোনো entry নেই।</div>
 </div>
 
 <div id="toast"></div>
 
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbxX9odOf2AKtPFVLylDTfCyjbbdPPekNyx-Baeo2o5-QcOgZo-X6kpTOBjCOHv7vxMl_Q/exec";
+
+// ── DEFAULT CREDENTIALS (stored in localStorage after first login) ──
+const DEFAULT_USER = "tosadmin";
+const DEFAULT_PASS = "Tos@2024";
+
+function getStoredCreds(){
+  return {
+    user: localStorage.getItem("appUser") || DEFAULT_USER,
+    pass: localStorage.getItem("appPass") || DEFAULT_PASS
+  };
+}
+
+// ── LOGIN ──
+function doLogin(){
+  const u = document.getElementById("l-user").value.trim();
+  const p = document.getElementById("l-pass").value;
+  const creds = getStoredCreds();
+  if(u === creds.user && p === creds.pass){
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("login-err").textContent = "";
+    loadFromSheets();
+  } else {
+    document.getElementById("login-err").textContent = "❌ Username বা Password ভুল!";
+    document.getElementById("l-pass").value = "";
+  }
+}
+
+function doLogout(){
+  document.getElementById("app").style.display = "none";
+  document.getElementById("login-screen").style.display = "flex";
+  document.getElementById("l-user").value = "";
+  document.getElementById("l-pass").value = "";
+  document.getElementById("login-err").textContent = "";
+}
+
+// ── CHANGE CREDENTIALS ──
+function doChangeCreds(){
+  const oldPass = document.getElementById("c-old").value;
+  const newUser = document.getElementById("c-user").value.trim();
+  const newPass = document.getElementById("c-new").value;
+  const newPass2 = document.getElementById("c-new2").value;
+  const errEl = document.getElementById("creds-err");
+  const creds = getStoredCreds();
+
+  if(oldPass !== creds.pass){ errEl.textContent="❌ বর্তমান password ভুল!"; return; }
+  if(!newUser){ errEl.textContent="❌ নতুন username দিন!"; return; }
+  if(newPass.length < 4){ errEl.textContent="❌ Password কমপক্ষে ৪ অক্ষর!"; return; }
+  if(newPass !== newPass2){ errEl.textContent="❌ Password দুটো মিলছে না!"; return; }
+
+  localStorage.setItem("appUser", newUser);
+  localStorage.setItem("appPass", newPass);
+  closeModal("creds-modal");
+  ["c-old","c-user","c-new","c-new2"].forEach(id=>document.getElementById(id).value="");
+  errEl.textContent="";
+  toast("✅ Login তথ্য পরিবর্তন হয়েছে!");
+}
+
 let rows=[];
 
 // Back button fix
-history.pushState({page:1},null,location.href);
+history.pushState({p:1},null,location.href);
 window.addEventListener('popstate',function(){
-  history.pushState({page:1},null,location.href);
-  if(document.activeElement&&document.activeElement!==document.body)document.activeElement.blur();
+  history.pushState({p:1},null,location.href);
+  if(document.activeElement&&document.activeElement!==document.body) document.activeElement.blur();
 });
 
 async function loadFromSheets(){
@@ -225,7 +343,6 @@ function deleteRow(i){
 }
 
 function editField(i,f,v){rows[i][f]=v;}
-
 function copyText(t){navigator.clipboard.writeText(t).then(()=>toast("📋 Copied!"));}
 
 function exportCSV(){
@@ -234,33 +351,34 @@ function exportCSV(){
     ...rows.map((r,i)=>[i+1,`"${r.company}"`,`"${r.user}"`,`"${r.password}"`,`"${r.note}"`].join(","))].join("\n");
   const a=document.createElement("a");
   a.href=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}));
-  a.download="user-pw-list-v1.csv";a.click();toast("📤 CSV export হয়েছে!");
+  a.download="user-pw-list-v1.csv";a.click();toast("📤 Export হয়েছে!");
 }
 
 function doImportCSV(){
   const file=document.getElementById("csv-file").files[0];
-  const errEl=document.getElementById("import-err");
-  if(!file){errEl.textContent="❌ CSV ফাইল বেছে নিন!";return;}
+  if(!file){document.getElementById("import-err").textContent="❌ ফাইল বেছে নিন!";return;}
   const reader=new FileReader();
   reader.onload=function(e){
     const lines=e.target.result.split("\n").map(l=>l.trim()).filter(l=>l);
-    let imported=0;
+    let n=0;
     lines.forEach((line,idx)=>{
       if(idx===0&&(line.toLowerCase().startsWith("#")||line.toLowerCase().includes("company")))return;
       const cols=line.split(",").map(c=>c.replace(/^"|"$/g,"").trim());
       if(cols.length<2)return;
       rows.push({company:cols[1]||cols[0]||"",user:cols[2]||"",password:cols[3]||"",note:cols[4]||""});
-      imported++;
+      n++;
     });
     renderTable();closeModal("import-modal");
     document.getElementById("csv-file").value="";
-    setStatus("✅ "+imported+" টি import হয়েছে। 💾 Save করুন।","ok");
-    toast("📥 "+imported+" টি entry import হয়েছে!");
+    setStatus("✅ "+n+" টি import হয়েছে। 💾 Save করুন।","ok");
+    toast("📥 "+n+" টি entry import!");
   };
   reader.readAsText(file,"UTF-8");
 }
 
-function closeModal(id){document.getElementById(id).style.display="none";}
+function closeModal(id){
+  document.getElementById(id).style.display="none";
+}
 
 function renderTable(){
   const q=document.getElementById("search").value.toLowerCase();
@@ -277,11 +395,11 @@ function renderTable(){
       <td><input class="editable" value="${esc(r.company)}" oninput="editField(${i},'company',this.value)" autocomplete="off"/></td>
       <td><div class="pw-wrap">
         <input class="editable" value="${esc(r.user)}" oninput="editField(${i},'user',this.value)" autocomplete="off" style="min-width:90px"/>
-        <button class="small-btn" onclick="copyText('${esc(r.user)}')" title="Copy">📋</button>
+        <button class="small-btn" onclick="copyText('${esc(r.user)}')">📋</button>
       </div></td>
       <td><div class="pw-wrap">
         <input class="editable" value="${esc(r.password)}" oninput="editField(${i},'password',this.value)" autocomplete="off" style="min-width:100px;font-family:monospace;"/>
-        <button class="small-btn" onclick="copyText('${esc(r.password)}')" title="Copy">📋</button>
+        <button class="small-btn" onclick="copyText('${esc(r.password)}')">📋</button>
       </div></td>
       <td><input class="editable" value="${esc(r.note)}" oninput="editField(${i},'note',this.value)" autocomplete="off"/></td>
       <td><button class="btn-del" onclick="deleteRow(${i})">🗑️</button></td>`;
@@ -292,8 +410,6 @@ function renderTable(){
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/'/g,"&#39;");}
 function setStatus(m,t){const el=document.getElementById("status");el.textContent=m;el.className=t||"";}
 function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500);}
-
-loadFromSheets();
 </script>
 </body>
 </html>
