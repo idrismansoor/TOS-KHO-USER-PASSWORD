@@ -410,7 +410,7 @@ function renderTable(){
         <button class="small-btn" onclick="copyText('${esc(r.user)}')" title="Username Copy">📋</button>
       </div></td>
       <td><div class="pw-wrap">
-        <span class="pw-text" style="font-family:monospace;user-select:all">${esc(r.password)}</span>
+        <input class="editable" value="${esc(r.password)}" oninput="editField(${i},'password',this.value)" autocomplete="off" style="min-width:110px;font-family:monospace;"/>
         <button class="small-btn" onclick="copyText('${esc(r.password)}')" title="Password Copy">📋</button>
       </div></td>
       <td><input class="editable" value="${esc(r.note)}" oninput="editField(${i},'note',this.value)"/></td>
