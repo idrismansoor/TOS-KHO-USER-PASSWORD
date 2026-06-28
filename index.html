@@ -3,166 +3,307 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOS KHO - User Password Manager</title>
+<title>USER PW LIST V.1</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
+:root {
+  --bg:#1a1a2e;--bg2:#16213e;--bg3:#0f3460;
+  --accent:#e94560;--accent2:#c73652;
+  --text:#eeeeee;--text2:#aaaaaa;
+  --border:#2a2a4a;--green:#27ae60;--blue:#2980b9;
+}
+.light{
+  --bg:#f0f2f5;--bg2:#ffffff;--bg3:#e8eaf0;
+  --accent:#c0392b;--accent2:#a93226;
+  --text:#1a1a2e;--text2:#555555;
+  --border:#d0d0e0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;}
 
-  header {
-    background: linear-gradient(135deg, #16213e, #0f3460);
-    padding: 16px 20px;
-    display: flex; align-items: center; gap: 12px;
-    border-bottom: 2px solid #e94560;
-  }
-  header h1 { font-size: 1.3rem; color: #e94560; }
-  header span { font-size: 0.85rem; color: #aaa; }
+/* LOCK */
+#lock-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;}
+.lock-box{background:var(--bg2);border:2px solid var(--accent);border-radius:16px;padding:40px 32px;text-align:center;max-width:360px;width:90%;}
+.lock-box h2{color:var(--accent);font-size:1.4rem;margin-bottom:6px;}
+.lock-box p{color:var(--text2);font-size:0.88rem;margin-bottom:20px;}
+.lock-input{width:100%;padding:12px 16px;border-radius:8px;border:2px solid var(--border);background:var(--bg3);color:var(--text);font-size:1rem;margin-bottom:10px;text-align:center;letter-spacing:.1em;}
+.lock-input:focus{outline:none;border-color:var(--accent);}
+.lock-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:8px;}
+.lock-btn:hover{background:var(--accent2);}
+.lock-btn.secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border);font-size:.85rem;}
+.lock-btn.secondary:hover{border-color:var(--accent);color:var(--accent);}
+#lock-error{color:var(--accent);font-size:.83rem;min-height:20px;margin:4px 0;}
+.lock-icon{font-size:2.8rem;margin-bottom:8px;}
 
-  .toolbar {
-    background: #16213e;
-    padding: 12px 20px;
-    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-    border-bottom: 1px solid #2a2a4a;
-  }
-  .toolbar input[type="text"] {
-    flex: 1; min-width: 180px;
-    padding: 8px 12px; border: 1px solid #3a3a5a;
-    border-radius: 6px; background: #0f3460; color: #fff; font-size: 0.9rem;
-  }
-  .toolbar input::placeholder { color: #888; }
+/* HEADER */
+#app{display:none;}
+header{background:linear-gradient(135deg,var(--bg2),var(--bg3));padding:10px 16px;border-bottom:2px solid var(--accent);}
+.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.header-title h1{font-size:1.1rem;color:var(--accent);font-weight:bold;}
+.header-title span{font-size:0.72rem;color:var(--text2);}
+.header-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
 
-  button {
-    padding: 8px 16px; border: none; border-radius: 6px;
-    cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: 0.2s;
-  }
-  .btn-add { background: #e94560; color: #fff; }
-  .btn-add:hover { background: #c73652; }
-  .btn-save { background: #27ae60; color: #fff; }
-  .btn-save:hover { background: #1e8449; }
-  .btn-reload { background: #2980b9; color: #fff; }
-  .btn-reload:hover { background: #1a6a99; }
+/* QUICK LINKS */
+.quick-links{display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;}
+.qlink{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:5px 10px;border-radius:6px;font-size:0.75rem;text-decoration:none;transition:.2s;white-space:nowrap;}
+.qlink:hover{border-color:var(--accent);color:var(--accent);}
 
-  #status {
-    padding: 8px 20px; font-size: 0.82rem; min-height: 30px;
-    background: #12122a; color: #aaa; border-bottom: 1px solid #2a2a4a;
-  }
-  #status.ok { color: #2ecc71; }
-  #status.err { color: #e74c3c; }
-  #status.loading { color: #f39c12; }
+button{cursor:pointer;border:none;border-radius:8px;font-weight:bold;transition:.2s;}
+.icon-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 11px;font-size:.8rem;}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-  .search-bar {
-    padding: 10px 20px; background: #16213e;
-    border-bottom: 1px solid #2a2a4a;
-  }
-  .search-bar input {
-    width: 100%; padding: 8px 12px; border: 1px solid #3a3a5a;
-    border-radius: 6px; background: #0f3460; color: #fff; font-size: 0.9rem;
-  }
+/* TOOLBAR */
+.toolbar{background:var(--bg2);padding:10px 14px;display:flex;gap:7px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);}
+.toolbar input{flex:1;min-width:130px;padding:9px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg3);color:var(--text);font-size:.86rem;}
+.toolbar input::placeholder{color:var(--text2);}
+.toolbar input:focus{outline:none;border-color:var(--accent);}
+.btn-add{background:var(--accent);color:#fff;padding:9px 14px;font-size:.84rem;}
+.btn-add:hover{background:var(--accent2);}
+.btn-save{background:var(--green);color:#fff;padding:9px 14px;font-size:.84rem;}
+.btn-reload{background:var(--blue);color:#fff;padding:9px 14px;font-size:.84rem;}
+.btn-export{background:#8e44ad;color:#fff;padding:9px 14px;font-size:.84rem;}
+.btn-import{background:#d35400;color:#fff;padding:9px 14px;font-size:.84rem;}
+button:hover{filter:brightness(.9);}
+.btn-add:hover{filter:none;background:var(--accent2);}
 
-  table {
-    width: 100%; border-collapse: collapse; font-size: 0.88rem;
-  }
-  thead { background: #0f3460; position: sticky; top: 0; z-index: 10; }
-  thead th {
-    padding: 10px 12px; text-align: left; color: #e94560;
-    font-weight: bold; border-bottom: 2px solid #e94560;
-  }
-  tbody tr { border-bottom: 1px solid #2a2a4a; transition: background 0.15s; }
-  tbody tr:hover { background: #1e1e3a; }
-  tbody td { padding: 8px 12px; vertical-align: middle; }
+/* STATUS */
+#status{padding:7px 14px;font-size:.81rem;min-height:30px;background:var(--bg);color:var(--text2);border-bottom:1px solid var(--border);}
+#status.ok{color:#2ecc71;}#status.err{color:#e74c3c;}#status.loading{color:#f39c12;}
 
-  .editable {
-    background: transparent; border: none; color: #eee;
-    font-size: 0.88rem; width: 100%; font-family: Arial, sans-serif;
-    padding: 2px 4px; border-radius: 4px;
-  }
-  .editable:focus {
-    outline: 1px solid #e94560; background: #0f3460;
-  }
+/* SEARCH */
+.search-bar{padding:9px 14px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.search-bar input{width:100%;padding:9px 13px;border:1px solid var(--border);border-radius:7px;background:var(--bg3);color:var(--text);font-size:.88rem;}
+.search-bar input:focus{outline:none;border-color:var(--accent);}
 
-  .pw-cell { position: relative; }
-  .pw-text { font-family: monospace; letter-spacing: 0.05em; }
-  .toggle-pw {
-    background: none; border: none; color: #e94560;
-    cursor: pointer; padding: 2px 6px; font-size: 0.75rem;
-    border-radius: 3px; transition: 0.15s;
-  }
-  .toggle-pw:hover { background: #e9456022; }
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.86rem;}
+thead{background:var(--bg3);position:sticky;top:0;z-index:5;}
+thead th{padding:10px 11px;text-align:left;color:var(--accent);border-bottom:2px solid var(--accent);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+tbody tr:hover{background:var(--bg3);}
+tbody td{padding:7px 9px;vertical-align:middle;}
+.editable{background:transparent;border:none;color:var(--text);font-size:.86rem;width:100%;font-family:Arial,sans-serif;padding:3px 5px;border-radius:4px;}
+.editable:focus{outline:1px solid var(--accent);background:var(--bg3);}
+.pw-wrap{display:flex;align-items:center;gap:4px;}
+.pw-text{font-family:monospace;font-size:.88rem;}
+.small-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:3px 7px;font-size:.72rem;border-radius:4px;}
+.small-btn:hover{border-color:var(--accent);color:var(--accent);filter:none;}
+.btn-del{background:none;border:1px solid var(--accent);color:var(--accent);padding:4px 9px;font-size:.78rem;border-radius:6px;}
+.btn-del:hover{background:var(--accent);color:#fff;filter:none;}
+.empty-msg{text-align:center;padding:50px;color:var(--text2);font-size:.92rem;}
 
-  .btn-del {
-    background: none; border: 1px solid #e94560; color: #e94560;
-    padding: 4px 10px; font-size: 0.78rem; border-radius: 4px;
-  }
-  .btn-del:hover { background: #e94560; color: #fff; }
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;z-index:8888;}
+.modal{background:var(--bg2);border:2px solid var(--accent);border-radius:14px;padding:28px;max-width:380px;width:92%;text-align:center;}
+.modal h3{color:var(--accent);margin-bottom:12px;font-size:1.1rem;}
+.modal input{width:100%;padding:10px 14px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.95rem;margin-bottom:10px;}
+.modal input:focus{outline:none;border-color:var(--accent);}
+.modal-btns{display:flex;gap:8px;justify-content:center;margin-top:10px;}
+.modal-btns button{padding:9px 20px;font-size:.88rem;}
+.modal p{color:var(--text2);font-size:.84rem;margin-bottom:14px;}
+#modal-err{color:var(--accent);font-size:.82rem;min-height:18px;}
 
-  .badge {
-    background: #e94560; color: #fff; border-radius: 10px;
-    font-size: 0.72rem; padding: 2px 7px; margin-left: 6px;
-  }
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:9px 20px;border-radius:20px;font-size:.84rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999;}
+#toast.show{opacity:1;}
 
-  #table-wrap { overflow-x: auto; }
-
-  .empty-msg {
-    text-align: center; padding: 40px; color: #555; font-size: 0.95rem;
-  }
+/* MOBILE */
+@media(max-width:600px){
+  .quick-links{gap:4px;}
+  .qlink{font-size:.7rem;padding:4px 8px;}
+  .toolbar input{min-width:100%;}
+  .btn-add,.btn-save,.btn-reload,.btn-export,.btn-import{width:100%;padding:11px;}
+  thead th{font-size:.76rem;padding:8px 5px;}
+  tbody td{font-size:.8rem;padding:7px 5px;}
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div>
-    <h1>🔐 TOS KHO Password Manager</h1>
-    <span>Google Sheets এ সংযুক্ত — সব device এ sync হবে</span>
+<!-- LOCK SCREEN -->
+<div id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-icon">🔐</div>
+    <h2>USER PW LIST V.1</h2>
+    <p id="lock-label">Master Password দিয়ে প্রবেশ করুন</p>
+    <input class="lock-input" type="password" id="pw-input" placeholder="Password লিখুন..." onkeydown="if(event.key==='Enter')unlock()" />
+    <div id="lock-error"></div>
+    <button class="lock-btn" onclick="unlock()">🔓 প্রবেশ করুন</button>
+    <button class="lock-btn secondary" onclick="showSetup()" id="setup-link" style="margin-top:8px">🔑 Password পরিবর্তন করুন</button>
+    <div style="margin-top:14px;font-size:.72rem;color:var(--text2)">Created by Idris Mansoor</div>
   </div>
-</header>
-
-<div class="toolbar">
-  <input type="text" id="inp-company" placeholder="কোম্পানির নাম" />
-  <input type="text" id="inp-user" placeholder="Username / Email" />
-  <input type="text" id="inp-pw" placeholder="Password" />
-  <input type="text" id="inp-note" placeholder="Note (ঐচ্ছিক)" />
-  <button class="btn-add" onclick="addRow()">➕ যোগ করুন</button>
-  <button class="btn-save" onclick="saveToSheets()">💾 Sheets এ Save</button>
-  <button class="btn-reload" onclick="loadFromSheets()">🔄 Reload</button>
 </div>
 
-<div id="status" class="loading">⏳ Google Sheets থেকে data load হচ্ছে...</div>
-
-<div class="search-bar">
-  <input type="text" id="search" placeholder="🔍 কোম্পানি বা username খুঁজুন..." oninput="renderTable()" />
+<!-- CHANGE PW MODAL -->
+<div class="modal-overlay" id="change-modal" style="display:none">
+  <div class="modal">
+    <h3>🔑 Master Password পরিবর্তন</h3>
+    <p>পুরানো password দিন, তারপর নতুন password দিন</p>
+    <input type="password" id="old-pw" placeholder="পুরানো Password" />
+    <input type="password" id="new-pw" placeholder="নতুন Password (কমপক্ষে ৪ অক্ষর)" />
+    <input type="password" id="confirm-pw" placeholder="নতুন Password আবার লিখুন" />
+    <div id="modal-err"></div>
+    <div class="modal-btns">
+      <button class="btn-save" onclick="changePw()">✅ পরিবর্তন করুন</button>
+      <button class="icon-btn" onclick="closeModal()">❌ বাতিল</button>
+    </div>
+  </div>
 </div>
 
-<div id="table-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>কোম্পানি</th>
-        <th>Username / Email</th>
-        <th>Password</th>
-        <th>Note</th>
-        <th>মুছুন</th>
-      </tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
-  <div id="empty-msg" class="empty-msg" style="display:none">কোনো entry নেই। উপরে যোগ করুন।</div>
+<!-- CSV IMPORT MODAL -->
+<div class="modal-overlay" id="import-modal" style="display:none">
+  <div class="modal">
+    <h3>📥 CSV Import</h3>
+    <p>CSV ফাইল select করুন।<br><small style="color:var(--text2)">Format: Company, Username, Password, Note</small></p>
+    <input type="file" id="csv-file" accept=".csv" style="background:var(--bg3);padding:10px;border-radius:8px;border:1px solid var(--border);color:var(--text);width:100%;margin-bottom:10px;" />
+    <div id="import-preview" style="font-size:.8rem;color:var(--text2);min-height:20px;"></div>
+    <div class="modal-btns">
+      <button class="btn-import" onclick="doImport()">📥 Import করুন</button>
+      <button class="icon-btn" onclick="closeImportModal()">❌ বাতিল</button>
+    </div>
+  </div>
 </div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <header>
+    <div class="header-top">
+      <div class="header-title">
+        <h1>🔐 USER PW LIST V.1</h1>
+        <span>Created by Idris Mansoor &nbsp;|&nbsp; Google Sheets সংযুক্ত — সব device এ sync</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">🌙 Dark</button>
+        <button class="icon-btn" onclick="openChangeModal()">🔑 PW Change</button>
+        <button class="icon-btn" onclick="lockApp()">🔒 Lock</button>
+      </div>
+    </div>
+    <div class="quick-links">
+      <span style="font-size:.72rem;color:var(--text2);align-self:center;">Quick Links:</span>
+      <a class="qlink" href="https://www.gulftainer.com/container-tracking/" target="_blank">🚢 Container Tracking</a>
+      <a class="qlink" href="https://tos.gulftainer.com/" target="_blank">🏢 TOS Portal</a>
+      <a class="qlink" href="https://eservices.gulftainer.com/a/e-token-generator/login" target="_blank">🎫 E-Token</a>
+      <a class="qlink" href="https://customer-registration.gulftainer.com/home" target="_blank">📋 Customer Reg.</a>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <input type="text" id="inp-company" placeholder="🏢 কোম্পানির নাম" />
+    <input type="text" id="inp-user" placeholder="👤 Username / Email" />
+    <input type="text" id="inp-pw" placeholder="🔑 Password" />
+    <input type="text" id="inp-note" placeholder="📝 Note" />
+    <button class="btn-add" onclick="addRow()">➕ যোগ করুন</button>
+    <button class="btn-save" onclick="saveToSheets()">💾 Save</button>
+    <button class="btn-reload" onclick="loadFromSheets()">🔄 Reload</button>
+    <button class="btn-export" onclick="exportCSV()">📤 CSV Export</button>
+    <button class="btn-import" onclick="openImportModal()">📥 CSV Import</button>
+  </div>
+
+  <div id="status" class="loading">⏳ লোড হচ্ছে...</div>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="🔍 কোম্পানি বা username খুঁজুন..." oninput="renderTable()" />
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>কোম্পানি</th><th>Username / Email</th>
+          <th>Password</th><th>Note</th><th>মুছুন</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="empty-msg" class="empty-msg" style="display:none">কোনো entry নেই। উপরে যোগ করুন।</div>
+  </div>
+</div>
+
+<div id="toast"></div>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxX9odOf2AKtPFVLylDTfCyjbbdPPekNyx-Baeo2o5-QcOgZo-X6kpTOBjCOHv7vxMl_Q/exec";
+const MASTER_KEY = "tosMasterPw";
+let rows = [], showPw = {}, isDark = true, importRows = [];
 
-let rows = []; // [{company, user, password, note}]
-let showPw = {}; // index -> bool
+// ── LOCK ─────────────────────────────────────────────
+window.onload = function() {
+  const stored = localStorage.getItem(MASTER_KEY);
+  if (stored) {
+    document.getElementById("lock-label").textContent = "Master Password দিয়ে প্রবেশ করুন";
+    document.getElementById("setup-link").style.display = "block";
+  } else {
+    document.getElementById("lock-label").textContent = "প্রথমবার: নতুন Master Password সেট করুন";
+    document.getElementById("setup-link").style.display = "none";
+  }
+};
 
-function setStatus(msg, type) {
-  const el = document.getElementById("status");
-  el.textContent = msg;
-  el.className = type || "";
+function unlock() {
+  const input = document.getElementById("pw-input").value;
+  const stored = localStorage.getItem(MASTER_KEY);
+  if (!stored) {
+    if (input.length < 4) { document.getElementById("lock-error").textContent = "কমপক্ষে ৪ অক্ষর দিন!"; return; }
+    localStorage.setItem(MASTER_KEY, btoa(input));
+    openApp(); return;
+  }
+  if (btoa(input) === stored) { openApp(); }
+  else { document.getElementById("lock-error").textContent = "❌ ভুল password!"; document.getElementById("pw-input").value = ""; }
 }
 
-// ── LOAD FROM SHEETS ────────────────────────────────
+function showSetup() {
+  localStorage.removeItem(MASTER_KEY);
+  document.getElementById("lock-label").textContent = "নতুন Master Password সেট করুন";
+  document.getElementById("lock-error").textContent = "";
+  document.getElementById("pw-input").value = "";
+  document.getElementById("setup-link").style.display = "none";
+}
+
+function openApp() {
+  document.getElementById("lock-screen").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  loadFromSheets();
+}
+
+function lockApp() {
+  document.getElementById("app").style.display = "none";
+  document.getElementById("lock-screen").style.display = "flex";
+  document.getElementById("pw-input").value = "";
+  document.getElementById("lock-error").textContent = "";
+  const stored = localStorage.getItem(MASTER_KEY);
+  document.getElementById("lock-label").textContent = stored ? "Master Password দিয়ে প্রবেশ করুন" : "নতুন Master Password সেট করুন";
+  document.getElementById("setup-link").style.display = stored ? "block" : "none";
+}
+
+// ── CHANGE PASSWORD ───────────────────────────────────
+function openChangeModal() { document.getElementById("change-modal").style.display = "flex"; }
+function closeModal() {
+  document.getElementById("change-modal").style.display = "none";
+  ["old-pw","new-pw","confirm-pw"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("modal-err").textContent = "";
+}
+function changePw() {
+  const oldPw = document.getElementById("old-pw").value;
+  const newPw = document.getElementById("new-pw").value;
+  const confirmPw = document.getElementById("confirm-pw").value;
+  const stored = localStorage.getItem(MASTER_KEY);
+  if (btoa(oldPw) !== stored) { document.getElementById("modal-err").textContent = "❌ পুরানো password ভুল!"; return; }
+  if (newPw.length < 4) { document.getElementById("modal-err").textContent = "❌ নতুন password কমপক্ষে ৪ অক্ষর!"; return; }
+  if (newPw !== confirmPw) { document.getElementById("modal-err").textContent = "❌ নতুন password মিলছে না!"; return; }
+  localStorage.setItem(MASTER_KEY, btoa(newPw));
+  closeModal();
+  toast("✅ Password পরিবর্তন সফল!");
+}
+
+// ── THEME ─────────────────────────────────────────────
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle("light", !isDark);
+  document.getElementById("theme-btn").textContent = isDark ? "🌙 Dark" : "☀️ Light";
+}
+
+// ── LOAD ──────────────────────────────────────────────
 async function loadFromSheets() {
-  setStatus("⏳ Google Sheets থেকে data load হচ্ছে...", "loading");
+  setStatus("⏳ Google Sheets থেকে load হচ্ছে...", "loading");
   try {
     const res = await fetch(API_URL, { redirect: "follow" });
     const data = await res.json();
@@ -170,123 +311,150 @@ async function loadFromSheets() {
       rows = data.rows;
       localStorage.setItem("tosKhoBackup", JSON.stringify(rows));
       setStatus("✅ " + rows.length + " টি entry load হয়েছে — Google Sheets সংযুক্ত", "ok");
-    } else {
-      throw new Error("API error");
-    }
-  } catch (e) {
-    // Fallback: localStorage
-    const backup = localStorage.getItem("tosKhoBackup");
-    if (backup) {
-      rows = JSON.parse(backup);
-      setStatus("⚠️ Sheets সংযোগ ব্যর্থ — local backup থেকে " + rows.length + " entry দেখাচ্ছে", "err");
-    } else {
-      rows = [];
-      setStatus("⚠️ Sheets সংযোগ ব্যর্থ — নতুন entry যোগ করুন", "err");
-    }
+    } else throw new Error();
+  } catch(e) {
+    const b = localStorage.getItem("tosKhoBackup");
+    rows = b ? JSON.parse(b) : [];
+    setStatus(b ? "⚠️ Sheets ব্যর্থ — local backup: " + rows.length + " entry" : "⚠️ Sheets ব্যর্থ — নতুন entry যোগ করুন", "err");
   }
   renderTable();
 }
 
-// ── SAVE TO SHEETS ───────────────────────────────────
+// ── SAVE ──────────────────────────────────────────────
 async function saveToSheets() {
   setStatus("⏳ Google Sheets এ save হচ্ছে...", "loading");
   try {
-    const payload = {
-      action: "save",
-      rows: rows.map((r, i) => [i + 1, r.company, r.user, r.password, r.note])
-    };
-    const res = await fetch(API_URL, {
-      method: "POST",
-      redirect: "follow",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify(payload)
-    });
+    const payload = { action:"save", rows: rows.map((r,i) => [i+1,r.company,r.user,r.password,r.note]) };
+    const res = await fetch(API_URL, { method:"POST", redirect:"follow", headers:{"Content-Type":"text/plain"}, body:JSON.stringify(payload) });
     const data = await res.json();
     if (data.status === "ok") {
       localStorage.setItem("tosKhoBackup", JSON.stringify(rows));
       setStatus("✅ " + rows.length + " টি entry Google Sheets এ save হয়েছে!", "ok");
+      toast("💾 Save সফল!");
     } else throw new Error();
-  } catch (e) {
+  } catch(e) {
     localStorage.setItem("tosKhoBackup", JSON.stringify(rows));
-    setStatus("⚠️ Sheets save ব্যর্থ — local এ save হয়েছে। পরে আবার চেষ্টা করুন।", "err");
+    setStatus("⚠️ Sheets save ব্যর্থ — local এ save হয়েছে", "err");
   }
 }
 
-// ── ADD ROW ──────────────────────────────────────────
+// ── ADD ───────────────────────────────────────────────
 function addRow() {
   const company = document.getElementById("inp-company").value.trim();
   const user = document.getElementById("inp-user").value.trim();
   const pw = document.getElementById("inp-pw").value.trim();
   const note = document.getElementById("inp-note").value.trim();
-  if (!company && !user) {
-    setStatus("❌ কোম্পানি বা username দিন!", "err");
-    return;
-  }
+  if (!company && !user) { setStatus("❌ কোম্পানি বা username দিন!", "err"); return; }
   rows.push({ company, user, password: pw, note });
   ["inp-company","inp-user","inp-pw","inp-note"].forEach(id => document.getElementById(id).value = "");
   renderTable();
-  setStatus("✅ যোগ হয়েছে! Sheets এ save করতে 💾 বাটন চাপুন।", "ok");
+  setStatus("✅ যোগ হয়েছে! 💾 Save করুন।", "ok");
+  toast("✅ Entry যোগ হয়েছে!");
 }
 
-// ── DELETE ROW ───────────────────────────────────────
-function deleteRow(idx) {
+function deleteRow(i) {
   if (!confirm("এই entry মুছবেন?")) return;
-  rows.splice(idx, 1);
+  rows.splice(i, 1); renderTable();
+  setStatus("🗑️ মুছে গেছে। 💾 Save করুন।", "ok");
+}
+function editField(i, field, val) { rows[i][field] = val; }
+function togglePw(i) { showPw[i] = !showPw[i]; renderTable(); }
+function copyText(txt) { navigator.clipboard.writeText(txt).then(() => toast("📋 Copied!")); }
+
+// ── CSV EXPORT ────────────────────────────────────────
+function exportCSV() {
+  if (!rows.length) { toast("⚠️ কোনো data নেই!"); return; }
+  const csv = ["#,Company,Username/Email,Password,Note",
+    ...rows.map((r,i) => `${i+1},"${r.company}","${r.user}","${r.password}","${r.note}"`)
+  ].join("\n");
+  const blob = new Blob(["\uFEFF" + csv], { type:"text/csv;charset=utf-8;" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "user-pw-list-v1.csv"; a.click();
+  toast("📤 CSV export হয়েছে!");
+}
+
+// ── CSV IMPORT ────────────────────────────────────────
+function openImportModal() { document.getElementById("import-modal").style.display = "flex"; }
+function closeImportModal() {
+  document.getElementById("import-modal").style.display = "none";
+  document.getElementById("csv-file").value = "";
+  document.getElementById("import-preview").textContent = "";
+  importRows = [];
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("csv-file").addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const lines = ev.target.result.split("\n").filter(l => l.trim());
+      importRows = [];
+      let skip = 0;
+      lines.forEach((line, idx) => {
+        const cols = parseCSVLine(line);
+        if (idx === 0 && (cols[0] === "#" || cols[1] === "Company" || cols[1] === "কোম্পানি")) { skip = 1; return; }
+        if (cols.length >= 3) {
+          const start = cols[0] && !isNaN(cols[0]) ? 1 : 0;
+          importRows.push({ company: cols[start]||"", user: cols[start+1]||"", password: cols[start+2]||"", note: cols[start+3]||"" });
+        }
+      });
+      document.getElementById("import-preview").textContent = "✅ " + importRows.length + " টি row পাওয়া গেছে।";
+    };
+    reader.readAsText(file, "UTF-8");
+  });
+});
+
+function parseCSVLine(line) {
+  const result = []; let cur = ""; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === '"') { inQ = !inQ; }
+    else if (line[i] === ',' && !inQ) { result.push(cur.trim()); cur = ""; }
+    else { cur += line[i]; }
+  }
+  result.push(cur.trim());
+  return result;
+}
+
+function doImport() {
+  if (!importRows.length) { toast("⚠️ ফাইল select করুন!"); return; }
+  if (!confirm(importRows.length + " টি row import হবে। বিদ্যমান data থাকবে। Continue?")) return;
+  rows = [...rows, ...importRows];
+  closeImportModal();
   renderTable();
-  setStatus("🗑️ মুছে গেছে। Sheets এ save করতে 💾 বাটন চাপুন।", "ok");
+  setStatus("✅ " + importRows.length + " টি row import হয়েছে! 💾 Save করুন।", "ok");
+  toast("📥 Import সফল! " + importRows.length + " টি entry যোগ হয়েছে।");
 }
 
-// ── INLINE EDIT ──────────────────────────────────────
-function editField(idx, field, value) {
-  rows[idx][field] = value;
-}
-
-// ── RENDER ───────────────────────────────────────────
+// ── RENDER ────────────────────────────────────────────
 function renderTable() {
   const q = document.getElementById("search").value.toLowerCase();
   const tbody = document.getElementById("tbody");
   tbody.innerHTML = "";
-
-  const filtered = rows.map((r, i) => ({ ...r, _idx: i }))
+  const filtered = rows.map((r,i) => ({...r,_i:i}))
     .filter(r => !q || r.company.toLowerCase().includes(q) || r.user.toLowerCase().includes(q) || r.note.toLowerCase().includes(q));
-
   document.getElementById("empty-msg").style.display = filtered.length === 0 ? "block" : "none";
-
   filtered.forEach((r, fi) => {
-    const i = r._idx;
-    const shown = showPw[i];
+    const i = r._i; const shown = showPw[i];
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td style="color:#888;font-size:0.8rem">${fi + 1}</td>
+      <td style="color:var(--text2);font-size:.76rem;width:28px">${fi+1}</td>
       <td><input class="editable" value="${esc(r.company)}" oninput="editField(${i},'company',this.value)" /></td>
       <td><input class="editable" value="${esc(r.user)}" oninput="editField(${i},'user',this.value)" /></td>
-      <td class="pw-cell">
+      <td><div class="pw-wrap">
         <span class="pw-text">${shown ? esc(r.password) : "••••••••"}</span>
-        <button class="toggle-pw" onclick="togglePw(${i})">${shown ? "🙈" : "👁️"}</button>
-        <button class="toggle-pw" onclick="copyText('${esc(r.password)}')" title="Copy">📋</button>
-      </td>
+        <button class="small-btn" onclick="togglePw(${i})">${shown?"🙈":"👁️"}</button>
+        <button class="small-btn" onclick="copyText('${esc(r.password)}')" title="Copy">📋</button>
+      </div></td>
       <td><input class="editable" value="${esc(r.note)}" oninput="editField(${i},'note',this.value)" /></td>
-      <td><button class="btn-del" onclick="deleteRow(${i})">🗑️</button></td>
-    `;
+      <td><button class="btn-del" onclick="deleteRow(${i})">🗑️</button></td>`;
     tbody.appendChild(tr);
   });
 }
 
-function togglePw(i) {
-  showPw[i] = !showPw[i];
-  renderTable();
-}
-
-function copyText(txt) {
-  navigator.clipboard.writeText(txt).then(() => setStatus("📋 Copy হয়েছে!", "ok"));
-}
-
-function esc(s) {
-  return String(s || "").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
-}
-
-// ── INIT ─────────────────────────────────────────────
-loadFromSheets();
+function esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/'/g,"&#39;"); }
+function setStatus(msg,type) { const el=document.getElementById("status"); el.textContent=msg; el.className=type||""; }
+function toast(msg) { const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2500); }
 </script>
 </body>
 </html>
