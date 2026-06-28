@@ -122,7 +122,10 @@ tbody td{padding:9px;vertical-align:middle;}
     </div>
     <div class="login-field">
       <label>🔑 Password</label>
-      <input type="password" id="l-pass" placeholder="Password লিখুন" autocomplete="new-password" onkeydown="if(event.key==='Enter')doLogin()" />
+      <div style="position:relative;">
+        <input type="password" id="l-pass" placeholder="Password লিখুন" autocomplete="new-password" onkeydown="if(event.key==='Enter')doLogin()" style="padding-right:44px;width:100%;"/>
+        <button onclick="toggleLoginPw()" id="eye-btn" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#aaa;font-size:1.1rem;cursor:pointer;padding:4px;">👁️</button>
+      </div>
     </div>
     <div id="login-err"></div>
     <button class="btn-login" onclick="doLogin()">🔓 প্রবেশ করুন</button>
@@ -238,6 +241,13 @@ function getStoredCreds(){
 }
 
 // ── LOGIN ──
+function toggleLoginPw(){
+  const inp = document.getElementById("l-pass");
+  const btn = document.getElementById("eye-btn");
+  if(inp.type === "password"){ inp.type = "text"; btn.textContent = "🙈"; }
+  else { inp.type = "password"; btn.textContent = "👁️"; }
+}
+
 function doLogin(){
   const u = document.getElementById("l-user").value.trim();
   const p = document.getElementById("l-pass").value;
@@ -292,6 +302,14 @@ window.addEventListener('popstate',function(){
   if(document.activeElement&&document.activeElement!==document.body) document.activeElement.blur();
 });
 
+function fixStickyHeader(){
+  const stickyH = document.getElementById("sticky-top").offsetHeight;
+  document.querySelector("thead").style.top = stickyH + "px";
+}
+window.addEventListener("resize", fixStickyHeader);
+// Also run after content loads
+setTimeout(fixStickyHeader, 500);
+
 async function loadFromSheets(){
   setStatus("⏳ Google Sheets থেকে load হচ্ছে...","loading");
   try{
@@ -308,6 +326,7 @@ async function loadFromSheets(){
     else{rows=[];setStatus("⚠️ Sheets সংযোগ ব্যর্থ","err");}
   }
   renderTable();
+  fixStickyHeader();
 }
 
 async function saveToSheets(){
