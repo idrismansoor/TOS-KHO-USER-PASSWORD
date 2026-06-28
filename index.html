@@ -211,12 +211,12 @@ tbody td{padding:9px 8px;vertical-align:middle;}
     </header>
 
     <div class="toolbar">
-      <input type="text" id="inp-company" placeholder="🏢 কোম্পানি" autocomplete="off"/>
+      <input type="text" id="inp-company" placeholder="🏢 Company Name" autocomplete="off"/>
       <input type="text" id="inp-user" placeholder="👤 User Name" autocomplete="off"/>
       <input type="text" id="inp-pw" placeholder="🔑 Password" autocomplete="new-password"/>
       <input type="text" id="inp-note" placeholder="📝 Note / Mobile No." autocomplete="off"/>
       <div class="t-btns">
-        <button class="btn-add" onclick="addRow()">➕ যোগ করুন</button>
+        <button class="btn-add" onclick="addRow()">➕ নতুন কোম্পানি এ্যাড করুন</button>
         <button class="btn-save" onclick="saveToSheets()">💾 Save</button>
         <button class="btn-reload" onclick="loadFromSheets()">🔄 Reload</button>
       </div>
@@ -225,7 +225,7 @@ tbody td{padding:9px 8px;vertical-align:middle;}
     <div id="status" class="loading">⏳ লোড হচ্ছে...</div>
 
     <div class="search-bar">
-      <input type="search" id="search" placeholder="🔍 খুঁজুন..." autocomplete="off" oninput="renderTable()" onkeyup="renderTable()"/>
+      <input type="search" id="search" placeholder="🔍 কোম্পানি সার্চ করুন..." autocomplete="off" oninput="renderTable()" onkeyup="renderTable()"/>
       <button onclick="clearSearch()">✖ Clear</button>
     </div>
 
@@ -235,12 +235,12 @@ tbody td{padding:9px 8px;vertical-align:middle;}
         <thead>
           <!-- DESKTOP HEADER -->
           <tr class="desk-thead">
-            <th style="width:34px">#</th>
-            <th style="width:22%">কোম্পানি</th>
+            <th style="width:40px;text-align:center">#</th>
+            <th style="width:22%">Company Name</th>
             <th style="width:16%">User Name</th>
             <th style="width:20%">Password</th>
-            <th style="width:18%">Note / Mobile No.</th>
-            <th style="width:60px">মুছুন</th>
+            <th style="width:20%">Note / Mobile No.</th>
+            <th style="width:80px;text-align:center">Delete</th>
           </tr>
           <!-- MOBILE HEADER -->
           <tr class="mobile-thead" style="display:none;">
@@ -329,7 +329,7 @@ async function loadFromSheets(){
     if(data.status==="ok"){
       rows=data.rows;
       localStorage.setItem("tosKhoBackup",JSON.stringify(rows));
-      setStatus("✅ "+rows.length+" টি entry load হয়েছে","ok");
+      setStatus("✅ "+rows.length+" টি entry load হয়েছে — Google Sheets সংযুক্ত","ok");
     }else throw new Error();
   }catch(e){
     const b=localStorage.getItem("tosKhoBackup");
@@ -424,21 +424,21 @@ function renderTable(){
     const deskTr = document.createElement("tr"); deskTr.className = "desk-row";
     deskTr.className = "desk-row";
     deskTr.innerHTML = `
-      <td style="color:#aaa;font-size:0.9rem;width:34px">${fi+1}</td>
+      <td style="color:#aaa;font-size:0.9rem;width:40px;text-align:center">${fi+1}</td>
       <td><input class="editable" value="${esc(r.company)}" oninput="editField(${i},'company',this.value)" autocomplete="off"/></td>
       <td><div class="pw-wrap">
         <input class="editable" value="${esc(r.user)}" oninput="editField(${i},'user',this.value)" autocomplete="off" style="min-width:70px"/>
-        <button class="small-btn" onclick="copyText('${esc(r.user)}')">📋</button>
+        <button class="small-btn" onclick="copyText('${esc(r.user)}')">📋 কপি করুন</button>
       </div></td>
       <td><div class="pw-wrap">
         <input class="editable" value="${esc(r.password)}" oninput="editField(${i},'password',this.value)" autocomplete="off" style="min-width:80px;font-family:monospace;"/>
-        <button class="small-btn" onclick="copyText('${esc(r.password)}')">📋</button>
+        <button class="small-btn" onclick="copyText('${esc(r.password)}')">📋 কপি করুন</button>
       </div></td>
       <td><div class="pw-wrap">
         <input class="editable" value="${esc(r.note)}" oninput="editField(${i},'note',this.value)" autocomplete="off" style="min-width:70px"/>
-        <button class="small-btn" onclick="copyText('${esc(r.note)}')">📋</button>
+        <button class="small-btn" onclick="copyText('${esc(r.note)}')">📋 কপি করুন</button>
       </div></td>
-      <td><button class="btn-del" onclick="deleteRow(${i})">🗑️</button></td>`;
+      <td style="text-align:center"><button class="btn-del" onclick="deleteRow(${i})">🗑️</button></td>`;
     tbody.appendChild(deskTr);
 
     // MOBILE ROW (card style)
