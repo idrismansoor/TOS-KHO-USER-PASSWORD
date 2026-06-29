@@ -33,7 +33,7 @@ body{font-family:Arial,sans-serif;background:#1a1a2e;color:#eee;font-size:15px;}
 #app{display:none;flex-direction:column;height:100vh;}
 
 /* STICKY HEADER */
-#sticky-top{flex-shrink:0;background:#16213e;}
+#sticky-top{flex-shrink:0;background:#16213e;width:100%;}
 
 header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px solid #e94560;padding:10px 14px;}
 .header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;}
@@ -77,7 +77,7 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 #thead-wrap th{padding:9px 8px;text-align:left;color:#e94560;font-size:0.9rem;white-space:nowrap;}
 
 /* SCROLLABLE TABLE BODY */
-#tbody-wrap{flex:1;overflow-y:scroll;overflow-x:hidden;-webkit-overflow-scrolling:touch;min-height:0;}
+#tbody-wrap{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;min-height:0;width:100%;}
 #main-table{width:100%;border-collapse:collapse;font-size:0.9rem;table-layout:fixed;}
 tbody tr{border-bottom:2px solid #2a2a4a;}
 tbody tr:active{background:#1e1e3a;}
@@ -151,6 +151,27 @@ tbody td{padding:9px 8px;vertical-align:middle;}
   </div>
 </div>
 
+<!-- ADD COMPANY MODAL -->
+<div class="modal-bg" id="add-modal" style="display:none">
+  <div class="modal">
+    <h3>➕ নতুন কোম্পানি এ্যাড করুন</h3>
+    <label>🏢 Company Name</label>
+    <input type="text" id="inp-company" placeholder="Company Name লিখুন" autocomplete="off" onkeydown="if(event.key==='Enter')document.getElementById('inp-user').focus()"/>
+    <label>👤 User Name</label>
+    <input type="text" id="inp-user" placeholder="User Name লিখুন" autocomplete="off" onkeydown="if(event.key==='Enter')document.getElementById('inp-pw').focus()"/>
+    <label>🔑 Password</label>
+    <input type="text" id="inp-pw" placeholder="Password লিখুন" autocomplete="new-password" onkeydown="if(event.key==='Enter')document.getElementById('inp-note').focus()"/>
+    <label>📝 Note / Mobile No.</label>
+    <input type="text" id="inp-note" placeholder="Note / Mobile No. (ঐচ্ছিক)" autocomplete="off" onkeydown="if(event.key==='Enter')addAndSave()"/>
+    <div class="modal-err" id="add-err"></div>
+    <div class="modal-btns">
+      <button class="btn-ok" onclick="addAndSave()">💾 Save করুন</button>
+      <button class="btn-cancel" onclick="closeModal('add-modal')">❌ বাতিল</button>
+    </div>
+    <p style="color:#888;font-size:0.78rem;margin-top:8px;">💡 Enter চাপলে পরের field এ যাবে, শেষে Save হবে</p>
+  </div>
+</div>
+
 <!-- CHANGE CREDS MODAL -->
 <div class="modal-bg" id="creds-modal" style="display:none">
   <div class="modal">
@@ -211,12 +232,8 @@ tbody td{padding:9px 8px;vertical-align:middle;}
     </header>
 
     <div class="toolbar">
-      <input type="text" id="inp-company" placeholder="🏢 Company Name" autocomplete="off"/>
-      <input type="text" id="inp-user" placeholder="👤 User Name" autocomplete="off"/>
-      <input type="text" id="inp-pw" placeholder="🔑 Password" autocomplete="new-password"/>
-      <input type="text" id="inp-note" placeholder="📝 Note / Mobile No." autocomplete="off"/>
       <div class="t-btns">
-        <button class="btn-add" onclick="addRow()">➕ নতুন কোম্পানি এ্যাড করুন</button>
+        <button class="btn-add" onclick="openAddModal()">➕ নতুন কোম্পানি এ্যাড করুন</button>
         <button class="btn-save" onclick="saveToSheets()">💾 Save</button>
         <button class="btn-reload" onclick="loadFromSheets()">🔄 Reload</button>
       </div>
@@ -255,14 +272,14 @@ tbody td{padding:9px 8px;vertical-align:middle;}
 
   <!-- SCROLLABLE BODY -->
   <div id="tbody-wrap">
-    <table id="main-table" style="width:100%;table-layout:fixed;">
+    <table id="main-table" style="width:100%;table-layout:fixed;border-collapse:collapse;">
       <colgroup>
         <col style="width:44px"/>
-        <col style="width:22%"/>
+        <col style="width:23%"/>
         <col style="width:15%"/>
-        <col style="width:19%"/>
-        <col style="width:19%"/>
-        <col style="width:90px"/>
+        <col style="width:20%"/>
+        <col style="width:20%"/>
+        <col style="width:100px"/>
       </colgroup>
       <tbody id="tbody"></tbody>
     </table>
@@ -361,6 +378,26 @@ async function saveToSheets(){
     localStorage.setItem("tosKhoBackup",JSON.stringify(rows));
     setStatus("⚠️ Local এ save হয়েছে","err");
   }
+}
+
+function openAddModal(){
+  document.getElementById("add-modal").style.display = "flex";
+  setTimeout(()=>document.getElementById("inp-company").focus(), 100);
+}
+
+async function addAndSave(){
+  const c=document.getElementById("inp-company").value.trim();
+  const u=document.getElementById("inp-user").value.trim();
+  const p=document.getElementById("inp-pw").value.trim();
+  const n=document.getElementById("inp-note").value.trim();
+  if(!c&&!u){document.getElementById("add-err").textContent="❌ Company বা Username দিন!";return;}
+  rows.push({company:c,user:u,password:p,note:n});
+  ["inp-company","inp-user","inp-pw","inp-note"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("add-err").textContent="";
+  closeModal("add-modal");
+  renderTable();
+  setStatus("⏳ Google Sheets এ save হচ্ছে...","loading");
+  await saveToSheets();
 }
 
 function addRow(){
