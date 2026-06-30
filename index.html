@@ -34,16 +34,20 @@ body{font-family:Arial,sans-serif;background:#1a1a2e;color:#eee;font-size:15px;}
 
 /* HEADER */
 header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px solid #e94560;padding:10px 14px;}
-.header-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
+.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
 .header-left h1{font-size:1.1rem;color:#e94560;font-weight:bold;}
 .byline{font-size:0.75rem;color:#aaa;}
 .header-right{display:flex;gap:5px;flex-wrap:wrap;}
 .icon-btn{background:#0f3460;border:1px solid #2a2a4a;color:#eee;border-radius:7px;padding:6px 10px;cursor:pointer;font-size:0.78rem;white-space:nowrap;}
 .icon-btn:hover{border-color:#e94560;color:#e94560;}
-.header-note{font-size:0.95rem;color:#2ecc71;text-align:center;font-weight:bold;padding:6px 0;}
-#quicklinks{display:flex;gap:6px;flex-wrap:wrap;padding:4px 0 2px;}
-#quicklinks a{color:#7ec8e3;font-size:0.78rem;text-decoration:none;padding:3px 10px;border:1px solid #2a3a5a;border-radius:12px;white-space:nowrap;}
+.header-note{font-size:0.95rem;color:#2ecc71;text-align:center;font-weight:bold;padding:0 8px;}
+#quicklinks{display:flex;gap:8px;flex-wrap:wrap;padding:6px 0 4px;}
+#quicklinks .link-wrap{position:relative;display:inline-flex;align-items:center;}
+#quicklinks a{color:#7ec8e3;font-size:0.92rem;font-weight:bold;text-decoration:none;padding:6px 16px;border:1px solid #2a3a5a;border-radius:14px;white-space:nowrap;}
 #quicklinks a:hover{background:#e94560;color:#fff;}
+.link-del{display:none;background:#e94560;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:0.7rem;line-height:1;cursor:pointer;position:absolute;top:-6px;right:-6px;}
+#quicklinks.edit-mode .link-del{display:block;}
+#quicklinks.edit-mode a{pointer-events:none;opacity:0.85;}
 
 /* TOOLBAR */
 .toolbar{background:#16213e;padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid #2a2a4a;}
@@ -217,15 +221,33 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
   </div>
 </div>
 
+<!-- ADD/EDIT LINK MODAL -->
+<div class="modal-bg" id="link-modal" style="display:none">
+  <div class="modal">
+    <h3 id="link-modal-title">🔗 নতুন Link যোগ করুন</h3>
+    <input type="hidden" id="link-edit-id"/>
+    <label>📝 Label (যেমন: TOS Gulftainer)</label>
+    <input type="text" id="link-label" placeholder="Label লিখুন" autocomplete="off"/>
+    <label>🔗 URL</label>
+    <input type="text" id="link-url" placeholder="https://..." autocomplete="off"/>
+    <div class="modal-err" id="link-err"></div>
+    <div class="modal-btns">
+      <button class="btn-ok" onclick="saveLink()">💾 Save করুন</button>
+      <button class="btn-cancel" onclick="closeModal('link-modal')">❌ বাতিল</button>
+    </div>
+  </div>
+</div>
+
 <!-- APP -->
 <div id="app">
   <div id="sticky-top">
     <header>
       <div class="header-top">
         <div class="header-left">
-          <h1>🗂️ USER PW LIST V.1</h1>
-          <div class="byline">Created by <b style="color:#2ecc71;">Idris Mansoor</b></div>
+          <h1 style="color:#09c1ae;">🗂️ USER PW LIST V.1</h1>
+          <div class="byline">Created by <b style="color:#09c1ae;">Idris Mansoor</b></div>
         </div>
+        <div class="header-note" style="flex:1;">📝 নোট: যেকোনো password এ্যাড করুন এবং Save করুন — Google Sheet এ যোগ হবে।</div>
         <div class="header-right">
           <button class="icon-btn" onclick="document.getElementById('creds-modal').style.display='flex'">🔑 Change PW</button>
           <button class="icon-btn" onclick="doLogout()">🚪 Logout</button>
@@ -233,14 +255,10 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
           <button class="icon-btn" onclick="exportCSV()">📤 Export</button>
         </div>
       </div>
-      <div class="header-note">📝 নোট: যেকোনো password এ্যাড করুন এবং Save করুন — Google Sheet এ যোগ হবে।</div>
-      <div id="quicklinks">
-        <a href="https://www.gulftainer.com/container-tracking/" target="_blank">📦 Container Tracking</a>
-        <a href="https://tos.gulftainer.com/" target="_blank">🚢 TOS Gulftainer</a>
-        <a href="https://eservices.gulftainer.com/a/e-token-generator/login" target="_blank">🎫 E-Token</a>
-        <a href="https://customer-registration.gulftainer.com/home" target="_blank">📋 Customer Reg.</a>
-        <a href="https://zfze.zajel.com/auth/login" target="_blank">📮 Zajel</a>
-        <a href="https://sso.dm.gov.ae/oxauth/authorize.htm?ui_locales=en&scope=openid+profile+email+dubai_municipality+dm_roles&acr_values=dm_external&response_type=code&redirect_uri=https%3A%2F%2Fhub.dm.gov.ae%2Fopenid%2Fappcallback&state=0807edf7d85e5d&nonce=n-0S6_WzA2Mj&client_id=9d541103-48bd-45ec-b813-99caf59d4717&challenge=2f02" target="_blank">🏛️ DM Gov</a>
+      <div id="quicklinks"></div>
+      <div style="display:flex;gap:8px;padding:2px 0 4px;">
+        <button class="icon-btn" onclick="openAddLinkModal()">➕ Add Link</button>
+        <button class="icon-btn" onclick="toggleEditLinks()">✏️ Edit Link</button>
       </div>
     </header>
     <div class="toolbar">
@@ -288,6 +306,90 @@ const API_URL="https://script.google.com/macros/s/AKfycbxX9odOf2AKtPFVLylDTfCyjb
 const DEFAULT_USER="idrismansoor", DEFAULT_PASS="ms3500";
 let rows=[];
 
+const DEFAULT_LINKS=[
+  {label:"📦 Container Tracking",url:"https://www.gulftainer.com/container-tracking/"},
+  {label:"🚢 TOS Gulftainer",url:"https://tos.gulftainer.com/"},
+  {label:"🎫 E-Token",url:"https://eservices.gulftainer.com/a/e-token-generator/login"},
+  {label:"📋 Customer Reg.",url:"https://customer-registration.gulftainer.com/home"},
+  {label:"📮 Zajel",url:"https://zfze.zajel.com/auth/login"},
+  {label:"🏛️ DM Gov",url:"https://sso.dm.gov.ae/oxauth/authorize.htm?ui_locales=en&scope=openid+profile+email+dubai_municipality+dm_roles&acr_values=dm_external&response_type=code&redirect_uri=https%3A%2F%2Fhub.dm.gov.ae%2Fopenid%2Fappcallback&state=0807edf7d85e5d&nonce=n-0S6_WzA2Mj&client_id=9d541103-48bd-45ec-b813-99caf59d4717&challenge=2f02"}
+];
+let quickLinks=[];
+let linkEditMode=false;
+
+function loadLinks(){
+  try{
+    const saved=localStorage.getItem("quickLinks");
+    quickLinks=saved?JSON.parse(saved):DEFAULT_LINKS.slice();
+  }catch(e){quickLinks=DEFAULT_LINKS.slice();}
+  renderLinks();
+}
+
+function saveLinks(){localStorage.setItem("quickLinks",JSON.stringify(quickLinks));}
+
+function renderLinks(){
+  const c=document.getElementById("quicklinks");
+  c.innerHTML="";
+  if(linkEditMode)c.classList.add("edit-mode");else c.classList.remove("edit-mode");
+  quickLinks.forEach((l,idx)=>{
+    const wrap=document.createElement("div");
+    wrap.className="link-wrap";
+    const a=document.createElement("a");
+    a.href=l.url;a.target="_blank";a.textContent=l.label;
+    a.onclick=function(ev){if(linkEditMode){ev.preventDefault();openAddLinkModal(idx);}};
+    wrap.appendChild(a);
+    const del=document.createElement("button");
+    del.className="link-del";del.textContent="✕";
+    del.onclick=function(){deleteLink(idx);};
+    wrap.appendChild(del);
+    c.appendChild(wrap);
+  });
+}
+
+function toggleEditLinks(){
+  linkEditMode=!linkEditMode;
+  renderLinks();
+  toast(linkEditMode?"✏️ Edit মোড চালু — লিংকে ক্লিক করে edit করুন, ✕ চাপলে delete হবে":"✅ Edit মোড বন্ধ");
+}
+
+function openAddLinkModal(editIdx){
+  document.getElementById("link-err").textContent="";
+  if(typeof editIdx==="number"){
+    document.getElementById("link-modal-title").textContent="✏️ Link পরিবর্তন করুন";
+    document.getElementById("link-edit-id").value=editIdx;
+    document.getElementById("link-label").value=quickLinks[editIdx].label;
+    document.getElementById("link-url").value=quickLinks[editIdx].url;
+  }else{
+    document.getElementById("link-modal-title").textContent="🔗 নতুন Link যোগ করুন";
+    document.getElementById("link-edit-id").value="";
+    document.getElementById("link-label").value="";
+    document.getElementById("link-url").value="";
+  }
+  document.getElementById("link-modal").style.display="flex";
+}
+
+function saveLink(){
+  const idVal=document.getElementById("link-edit-id").value;
+  const label=document.getElementById("link-label").value.trim();
+  const url=document.getElementById("link-url").value.trim();
+  const err=document.getElementById("link-err");
+  if(!label||!url){err.textContent="❌ Label ও URL দিন!";return;}
+  if(idVal!==""){
+    quickLinks[parseInt(idVal)]={label,url};
+  }else{
+    quickLinks.push({label,url});
+  }
+  saveLinks();renderLinks();closeModal("link-modal");
+  toast("✅ Link save হয়েছে!");
+}
+
+function deleteLink(idx){
+  if(!confirm("এই link টি মুছবেন?"))return;
+  quickLinks.splice(idx,1);
+  saveLinks();renderLinks();
+  toast("🗑️ Link মুছে গেছে!");
+}
+
 function getCreds(){return{user:localStorage.getItem("appUser")||DEFAULT_USER,pass:localStorage.getItem("appPass")||DEFAULT_PASS};}
 
 // Always reset to default if stored credentials don't match plain text format
@@ -326,6 +428,7 @@ function doLogin(){
       document.getElementById("login-screen").style.display="none";
       document.getElementById("app").style.display="flex";
       loadFromSheets();
+      loadLinks();
     }else{
       document.getElementById("login-err").textContent="❌ Username বা Password ভুল!";
       document.getElementById("l-pass").value="";
