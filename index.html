@@ -60,7 +60,7 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 
 /* STATUS */
 #status{padding:6px 14px;font-size:0.85rem;background:#1a1a2e;color:#aaa;border-bottom:1px solid #2a2a4a;}
-#status.ok{color:#2ecc71;}#status.err{color:#e74c3c;}#status.loading{color:#f39c12;}
+#status.ok{color:#2dd4ff;font-weight:bold;}#status.err{color:#ff5e7e;font-weight:bold;}#status.loading{color:#f1c40f;font-weight:bold;}
 
 /* SEARCH */
 .search-bar{padding:8px 12px;background:#16213e;border-bottom:1px solid #2a2a4a;display:flex;gap:6px;}
@@ -91,10 +91,10 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 .cell-flex input.mono{font-family:monospace;}
 .co-input{width:100%;background:transparent;border:none;color:#2ecc71;font-size:0.88rem;font-weight:bold;font-family:Arial,sans-serif;padding:2px 3px;outline:none;}
 .co-input:focus{background:#0f3460;border-radius:3px;}
-.cpbtn{background:#0f3460;border:1px solid #3a5a8a;color:#7ec8e3;padding:3px 6px;font-size:0.78rem;border-radius:4px;cursor:pointer;flex-shrink:0;}
-.cpbtn:hover{border-color:#e94560;color:#e94560;}
-.delbtn{background:none;border:1px solid #e94560;color:#e94560;padding:4px 8px;font-size:0.82rem;border-radius:5px;cursor:pointer;}
-.delbtn:hover{background:#e94560;color:#fff;}
+.cpbtn{background:#0a1a3a;border:1px solid #2dd4ff66;color:#2dd4ff;padding:3px 7px;font-size:0.78rem;border-radius:8px;cursor:pointer;flex-shrink:0;}
+.cpbtn:hover{box-shadow:0 0 6px #2dd4ff77;}
+.delbtn{background:linear-gradient(90deg,#e94560,#ff2d9c);border:none;color:#fff;padding:4px 10px;font-size:0.82rem;border-radius:10px;cursor:pointer;box-shadow:0 0 6px #e9456066;}
+.delbtn:hover{box-shadow:0 0 12px #ff2d9caa;}
 .sn{color:#2ecc71;font-size:0.82rem;text-align:center;font-weight:bold;}
 
 /* MOBILE CARDS */
@@ -106,8 +106,8 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 .card-row input{flex:1;background:#0f3460;border:none;border-radius:5px;color:#2ecc71;font-size:0.9rem;padding:6px 8px;outline:none;}
 .card-row input:focus{border:1px solid #e94560;}
 .card-row input.mono{font-family:monospace;}
-.card-copy{background:#0f3460;border:1px solid #3a5a8a;color:#7ec8e3;padding:7px 12px;font-size:0.85rem;border-radius:6px;cursor:pointer;white-space:nowrap;touch-action:manipulation;}
-.card-del{background:none;border:1px solid #e94560;color:#e94560;padding:7px 10px;font-size:0.85rem;border-radius:5px;cursor:pointer;margin-top:4px;width:100%;touch-action:manipulation;}
+.card-copy{background:#0a1a3a;border:1px solid #2dd4ff66;color:#2dd4ff;padding:7px 12px;font-size:0.85rem;border-radius:10px;cursor:pointer;white-space:nowrap;touch-action:manipulation;}
+.card-del{background:linear-gradient(90deg,#e94560,#ff2d9c);border:none;color:#fff;padding:7px 10px;font-size:0.85rem;border-radius:10px;cursor:pointer;margin-top:4px;width:100%;touch-action:manipulation;box-shadow:0 0 6px #e9456066;}
 
 /* EMPTY */
 .empty-msg{text-align:center;padding:40px;color:#555;}
@@ -123,7 +123,7 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 .modal-btns{display:flex;gap:8px;margin-top:14px;}
 .modal-btns button{flex:1;padding:10px;border-radius:20px;font-weight:bold;border:none;cursor:pointer;font-size:0.9rem;}
 .btn-ok{background:linear-gradient(90deg,#27ae60,#2dd4ff);color:#fff;box-shadow:0 0 10px #2dd4ff55;}
-.btn-cancel{background:#1a1a2e;border:1px solid #555;color:#ccc;}
+.btn-cancel{background:linear-gradient(90deg,#ff2d6a,#ff8a00);color:#fff;box-shadow:0 0 10px #ff2d6a55;}
 
 /* RESPONSIVE */
 @media(max-width:767px){
@@ -247,7 +247,7 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
   <div id="sticky-top">
     <header>
       <div class="header-top">
-        <div class="header-left" style="flex:1;text-align:center;">
+        <div class="header-left" style="text-align:left;">
           <div style="display:inline-flex;align-items:center;gap:10px;background:#0a0a1a;border:1px solid #2dd4ff;border-radius:10px;padding:6px 18px;box-shadow:0 0 10px #2dd4ff55;">
             <span style="font-size:1.4rem;filter:drop-shadow(0 0 6px #c026d3);">🗂️</span>
             <div style="text-align:left;">
