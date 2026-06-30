@@ -6,7 +6,7 @@
 <title>USER PW LIST V.1</title>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#f5fe04">
+<meta name="theme-color" content="#1a1a2e">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
@@ -25,8 +25,9 @@ body{font-family:Arial,sans-serif;background:#1a1a2e;color:#eee;font-size:15px;}
 .lf input:focus{outline:none;border-color:#e94560;}
 .eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#aaa;font-size:1.1rem;cursor:pointer;padding:4px;}
 #login-err{color:#e94560;font-size:0.83rem;min-height:18px;margin-bottom:8px;}
-.btn-login{width:100%;padding:12px;background:#e94560;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:bold;cursor:pointer;}
-.login-footer{margin-top:14px;font-size:0.78rem;font-weight:bold;color:#f1c40f;line-height:1.6;}
+.btn-login{width:100%;padding:13px;background:linear-gradient(90deg,#c026d3,#2dd4ff);color:#fff;border:none;border-radius:30px;font-size:1.05rem;font-weight:bold;cursor:pointer;letter-spacing:0.5px;box-shadow:0 0 14px #2dd4ff77,0 0 14px #c026d377;text-shadow:0 1px 3px #000;}
+.btn-login:hover{box-shadow:0 0 22px #2dd4ffaa,0 0 22px #c026d3aa;}
+.login-footer{margin-top:18px;font-size:0.78rem;font-weight:bold;line-height:1.7;background:linear-gradient(90deg,#ff2d9c,#c026d3,#2dd4ff);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:0.3px;border:1px solid #2dd4ff66;border-radius:14px;padding:10px 14px;box-shadow:0 0 16px #c026d344,inset 0 0 16px #2dd4ff22;}
 
 /* APP */
 #app{display:none;flex-direction:column;height:100vh;overflow:hidden;}
@@ -38,13 +39,13 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 .header-left h1{font-size:1.1rem;color:#e94560;font-weight:bold;}
 .byline{font-size:0.75rem;color:#aaa;}
 .header-right{display:flex;gap:5px;flex-wrap:wrap;}
-.icon-btn{background:#0f3460;border:1px solid #2a2a4a;color:#eee;border-radius:7px;padding:6px 10px;cursor:pointer;font-size:0.78rem;white-space:nowrap;}
-.icon-btn:hover{border-color:#e94560;color:#e94560;}
+.icon-btn{background:#0a0a1a;border:1px solid #2dd4ff88;color:#7ec8e3;border-radius:20px;padding:6px 14px;cursor:pointer;font-size:0.78rem;white-space:nowrap;box-shadow:0 0 6px #2dd4ff33;}
+.icon-btn:hover{border-color:#2dd4ff;color:#2dd4ff;box-shadow:0 0 12px #2dd4ff77;}
 .header-note{font-size:0.95rem;color:#2ecc71;text-align:center;font-weight:bold;padding:0 8px;}
 #quicklinks{display:flex;gap:8px;flex-wrap:wrap;padding:6px 0 4px;}
 #quicklinks .link-wrap{position:relative;display:inline-flex;align-items:center;}
-#quicklinks a{color:#7ec8e3;font-size:0.92rem;font-weight:bold;text-decoration:none;padding:6px 16px;border:1px solid #2a3a5a;border-radius:14px;white-space:nowrap;}
-#quicklinks a:hover{background:#e94560;color:#fff;}
+#quicklinks a{color:#7ec8e3;font-size:0.92rem;font-weight:bold;text-decoration:none;padding:6px 16px;border:1px solid #c026d388;border-radius:18px;white-space:nowrap;background:#0a0a1a;box-shadow:0 0 6px #c026d333;}
+#quicklinks a:hover{background:linear-gradient(90deg,#c026d3,#2dd4ff);color:#fff;box-shadow:0 0 14px #2dd4ff99;}
 .link-del{display:none;background:#e94560;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:0.7rem;line-height:1;cursor:pointer;position:absolute;top:-6px;right:-6px;}
 #quicklinks.edit-mode .link-del{display:block;}
 #quicklinks.edit-mode a{pointer-events:none;opacity:0.85;}
@@ -52,10 +53,10 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 /* TOOLBAR */
 .toolbar{background:#16213e;padding:8px 12px;display:flex;gap:6px;border-bottom:1px solid #2a2a4a;}
 .t-btns{display:flex;gap:6px;width:100%;}
-.t-btns button{flex:1;padding:9px 6px;font-size:0.9rem;font-weight:bold;border:none;border-radius:7px;cursor:pointer;}
-.btn-add{background:#e94560;color:#fff;}
-.btn-save{background:#27ae60;color:#fff;}
-.btn-reload{background:#2980b9;color:#fff;}
+.t-btns button{flex:1;padding:9px 6px;font-size:0.9rem;font-weight:bold;border:none;border-radius:20px;cursor:pointer;}
+.btn-add{background:linear-gradient(90deg,#e94560,#ff6b8b);color:#fff;box-shadow:0 0 12px #e9456066;}
+.btn-save{background:linear-gradient(90deg,#27ae60,#2dd4ff);color:#fff;box-shadow:0 0 12px #2dd4ff66;}
+.btn-reload{background:linear-gradient(90deg,#2980b9,#c026d3);color:#fff;box-shadow:0 0 12px #c026d366;}
 
 /* STATUS */
 #status{padding:6px 14px;font-size:0.85rem;background:#1a1a2e;color:#aaa;border-bottom:1px solid #2a2a4a;}
@@ -63,7 +64,7 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 
 /* SEARCH */
 .search-bar{padding:8px 12px;background:#16213e;border-bottom:1px solid #2a2a4a;display:flex;gap:6px;}
-.search-bar input{flex:1;padding:9px 12px;border:1px solid #2a2a4a;border-radius:7px;background:#0f3460;color:#eee;font-size:0.95rem;}
+.search-bar input{flex:1;padding:9px 14px;border:1px solid #2dd4ff55;border-radius:20px;background:#0f3460;color:#eee;font-size:0.95rem;}
 .search-bar input:focus{outline:none;border-color:#e94560;}
 .search-bar button{background:#0f3460;border:1px solid #2a2a4a;color:#eee;border-radius:7px;padding:8px 12px;font-size:0.85rem;cursor:pointer;}
 
@@ -113,16 +114,16 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 
 /* MODAL */
 .modal-bg{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:8888;padding:16px;}
-.modal{background:#16213e;border:2px solid #e94560;border-radius:14px;padding:24px;max-width:380px;width:100%;max-height:90vh;overflow-y:auto;}
-.modal h3{color:#e94560;margin-bottom:14px;font-size:1rem;text-align:center;}
+.modal{background:#0a0a1a;border:1px solid #2dd4ff;border-radius:16px;padding:24px;max-width:380px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 0 24px #2dd4ff55,0 0 24px #c026d333;}
+.modal h3{background:linear-gradient(90deg,#c026d3,#2dd4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px;font-size:1.05rem;font-weight:900;text-align:center;letter-spacing:0.3px;}
 .modal label{display:block;text-align:left;color:#aaa;font-size:0.8rem;margin-bottom:4px;margin-top:10px;}
-.modal input{width:100%;padding:10px 12px;border-radius:7px;border:1px solid #2a2a4a;background:#0f3460;color:#eee;font-size:0.9rem;outline:none;}
-.modal input:focus{border-color:#e94560;}
+.modal input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2dd4ff55;background:#0f3460;color:#eee;font-size:0.9rem;outline:none;}
+.modal input:focus{border-color:#2dd4ff;box-shadow:0 0 8px #2dd4ff66;}
 .modal-err{color:#e94560;font-size:0.82rem;min-height:18px;margin-top:8px;}
 .modal-btns{display:flex;gap:8px;margin-top:14px;}
-.modal-btns button{flex:1;padding:10px;border-radius:7px;font-weight:bold;border:none;cursor:pointer;font-size:0.9rem;}
-.btn-ok{background:#27ae60;color:#fff;}
-.btn-cancel{background:#555;color:#fff;}
+.modal-btns button{flex:1;padding:10px;border-radius:20px;font-weight:bold;border:none;cursor:pointer;font-size:0.9rem;}
+.btn-ok{background:linear-gradient(90deg,#27ae60,#2dd4ff);color:#fff;box-shadow:0 0 10px #2dd4ff55;}
+.btn-cancel{background:#1a1a2e;border:1px solid #555;color:#ccc;}
 
 /* RESPONSIVE */
 @media(max-width:767px){
@@ -145,9 +146,12 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-icon">🗂️</div>
-    <h2>USER PW LIST V.1</h2>
-    <div class="sub">Created by Idris Mansoor</div>
+    <div class="login-icon" style="filter:drop-shadow(0 0 10px #c026d3);">🗂️</div>
+    <div style="position:relative;display:inline-block;padding:14px 28px;margin-bottom:6px;">
+      <div style="position:absolute;inset:0;border:1px solid #2dd4ff;border-radius:50%/40%;box-shadow:0 0 12px #2dd4ff,inset 0 0 12px #2dd4ff44;"></div>
+      <h2 style="background:linear-gradient(90deg,#c026d3,#2dd4ff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px #c026d3aa;font-size:1.5rem;letter-spacing:1px;font-weight:900;margin:0;position:relative;">USER PW LIST V.1</h2>
+    </div>
+    <div class="sub" style="color:#2dd4ff;text-shadow:0 0 8px #2dd4ff88;">Created by Idris Mansoor</div>
     <div class="lf">
       <label>👤 Username</label>
       <input type="text" id="l-user" value="idrismansoor" readonly autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()" style="background:#0a2a4a;color:#2ecc71;font-weight:bold;cursor:default;"/>
@@ -244,9 +248,13 @@ header{background:linear-gradient(135deg,#16213e,#0f3460);border-bottom:2px soli
     <header>
       <div class="header-top">
         <div class="header-left" style="flex:1;text-align:center;">
-          <h1 style="color:#e94560;font-size:1.6rem;text-shadow:0 0 7px #ff2d6a,0 0 16px #f7e909;display:inline;">🗂️ USER PW LIST V.1</h1>
-          <span style="color:#aaa;"> &nbsp;|&nbsp; </span>
-          <span style="color:#2ecc71;font-weight:bold;font-size:1.05rem;text-shadow:0 0 6px #2ecc71,0 0 12px #2ecc71;">Created by Idris Mansoor</span>
+          <div style="display:inline-flex;align-items:center;gap:10px;background:#0a0a1a;border:1px solid #2dd4ff;border-radius:10px;padding:6px 18px;box-shadow:0 0 10px #2dd4ff55;">
+            <span style="font-size:1.4rem;filter:drop-shadow(0 0 6px #c026d3);">🗂️</span>
+            <div style="text-align:left;">
+              <div style="background:linear-gradient(90deg,#c026d3,#2dd4ff);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.05rem;font-weight:900;letter-spacing:0.5px;line-height:1.1;">USER PW LIST V.1</div>
+              <div style="color:#2dd4ff;font-size:0.75rem;line-height:1.1;text-shadow:0 0 4px #2dd4ff88;">Created by Idris Mansoor</div>
+            </div>
+          </div>
         </div>
         <div class="header-right">
           <button class="icon-btn" onclick="document.getElementById('creds-modal').style.display='flex'">🔑 Change PW</button>
